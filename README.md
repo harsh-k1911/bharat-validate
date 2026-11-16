@@ -2,6 +2,7 @@
 
 Validate and parse Indian identifiers — Aadhaar, PAN, GSTIN, IFSC, UPI ID, PIN code, mobile numbers and vehicle registrations — with **real checksums, not just regexes**.
 
+[![CI](https://github.com/harsh-k1911/bharat-validate/actions/workflows/ci.yml/badge.svg)](https://github.com/harsh-k1911/bharat-validate/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/bharat-validate.svg)](https://www.npmjs.com/package/bharat-validate)
 [![types](https://img.shields.io/npm/types/bharat-validate.svg)](https://www.npmjs.com/package/bharat-validate)
 [![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](./package.json)

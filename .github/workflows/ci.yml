@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  # Typecheck, test and build from source.
+  #
+  # The suite runs .ts files directly through `node --test`, which relies on
+  # Node stripping TypeScript natively. That is why this matrix starts at 24
+  # rather than at the Node 18 named in "engines" - the engines field is a
+  # promise about the published package, not about the test harness, and the
+  # `compat` job below is what actually checks it.
+  test:
+    name: Test on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['24', '26']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  # Build the exact tarball that `npm publish` would upload.
+  pack:
+    name: Pack the tarball
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      # npm pack does not create the destination directory itself.
+      - name: Pack
+        run: |
+          mkdir -p artifact
+          npm pack --pack-destination artifact
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tarball
+          path: artifact/*.tgz
+          retention-days: 7
+
+  # Install that tarball the way a user would and import it, on every Node
+  # version the "engines" field claims to support. This is what turns
+  # `"node": ">=18"` from a claim into something verified on every push.
+  compat:
+    name: Consume on Node ${{ matrix.node }}
+    needs: pack
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['18', '20', '22', '24', '26']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: tarball
+          path: artifact
+
+      - name: Install the packed package into a bare project
+        run: |
+          mkdir -p "$RUNNER_TEMP/consumer"
+          cd "$RUNNER_TEMP/consumer"
+          npm init -y > /dev/null
+          npm install "$GITHUB_WORKSPACE"/artifact/*.tgz
+          cp "$GITHUB_WORKSPACE"/scripts/smoke.mjs .
+          cp "$GITHUB_WORKSPACE"/scripts/smoke.cjs .
+
+      - name: Import it as ESM and as CommonJS
+        run: |
+          cd "$RUNNER_TEMP/consumer"
+          node smoke.mjs
+          node smoke.cjs
