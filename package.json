@@ -1,0 +1,60 @@
+{
+  "name": "bharat-validate",
+  "version": "1.0.0",
+  "description": "Validate and parse Indian identifiers - Aadhaar, PAN, GSTIN, IFSC, UPI ID, PIN code, mobile numbers and vehicle registrations - with real checksums, not just regexes. Zero dependencies.",
+  "keywords": [
+    "india",
+    "aadhaar",
+    "pan",
+    "gstin",
+    "gst",
+    "ifsc",
+    "upi",
+    "vpa",
+    "pincode",
+    "validation",
+    "validator",
+    "verhoeff",
+    "checksum",
+    "indian",
+    "bharat",
+    "typescript"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && node scripts/fix-dual.mjs",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "^5.9.3"
+  }
+}
