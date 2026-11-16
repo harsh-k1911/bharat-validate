@@ -1,6 +1,6 @@
 {
   "name": "bharat-validate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Validate and parse Indian identifiers - Aadhaar, PAN, GSTIN, IFSC, UPI ID, PIN code, mobile numbers and vehicle registrations - with real checksums, not just regexes. Zero dependencies.",
   "keywords": [
     "india",
