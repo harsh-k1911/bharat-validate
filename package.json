@@ -24,11 +24,11 @@
   "author": "harsh-k1911",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harsh-k1911/bharatify.git"
+    "url": "git+https://github.com/harsh-k1911/bharat-validate.git"
   },
-  "homepage": "https://github.com/harsh-k1911/bharatify#readme",
+  "homepage": "https://github.com/harsh-k1911/bharat-validate#readme",
   "bugs": {
-    "url": "https://github.com/harsh-k1911/bharatify/issues"
+    "url": "https://github.com/harsh-k1911/bharat-validate/issues"
   },
   "type": "module",
   "main": "./dist/cjs/index.js",
