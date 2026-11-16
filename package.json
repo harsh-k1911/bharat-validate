@@ -21,6 +21,15 @@
     "typescript"
   ],
   "license": "MIT",
+  "author": "harsh-k1911",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harsh-k1911/bharat-validate.git"
+  },
+  "homepage": "https://github.com/harsh-k1911/bharat-validate#readme",
+  "bugs": {
+    "url": "https://github.com/harsh-k1911/bharat-validate/issues"
+  },
   "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -39,6 +48,7 @@
   },
   "files": [
     "dist",
+    "src",
     "README.md",
     "LICENSE"
   ],
